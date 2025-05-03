@@ -29,4 +29,4 @@ def user_signUp(request):
     #         User.objects.create_user(username=user_name, first_name=first_name, last_name=last_name, email=email,password=password, phone_number=phone_number, profile_picture=profile_picture, address=address)
     #         messages.success(request, "Account created successfully")
     #         return redirect('user_authentication:userlogin')
-    return render(request, "signUp.html")
+    return render(request, "Signup.html")
