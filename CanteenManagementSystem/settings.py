@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'UserAuth',
+    'Menu',
 ]
 
 STATIC_URL = '/static/'
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'CanteenManagementSystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -140,3 +141,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Created New User Model
 AUTH_USER_MODEL = 'UserAuth.CustomUser'
+
+# Media files settings
+# https://docs.djangoproject.com/en/5.2/topics/files/#file-upload-handling
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -21,7 +21,7 @@
   <div class="w-1/2 flex justify-center items-center p-12">
     <div class="w-full max-w-md p-8 text-center border border-gray-200 rounded-xl shadow-xl bg-white">
       <h2 class="text-2xl font-semibold mb-8">Create an Account</h2>
-      <form method="POST" class="space-y-6">
+      <form method="POST" class="space-y-6" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="text-left">
           <input type="text" name="username" id="username" placeholder="Username" required
@@ -52,7 +52,7 @@
         </div>
         <input type="submit" value="Sign Up" class="submit_button w-full text-white p-2 rounded-lg" />
       </form>
-      <p class="mt-6 text-sm">Already have an account? <a href="#" class="text-gray-700">Sign in</a></p>
+      <p class="mt-6 text-sm">Already have an account? <a href="/" class="text-gray-700">Sign in</a></p>
     </div>
   </div>
 </div>
