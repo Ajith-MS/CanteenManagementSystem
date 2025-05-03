@@ -1,116 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-   
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap"
-    rel="stylesheet" />
-</head>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: "Poppins", sans-serif;
-  }
+{% extends 'base.html' %}
+{% load static %}
 
-  .login-box {
-    width: 400px;
-    padding: 40px;
-    text-align: center;
-  }
+{% block title %}Sign In{% endblock %}
 
-  p {
-    font-weight: 600;
-    font-size: 22px;
-    margin-right: 15px;
-  }
+{% block extra_css %}
+{% endblock %}
 
-  input[type="text"],
-  input[type="password"],
-  input[type="submit"] {
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 100%;
-    border: 2px solid #000;
-    border-radius: 4px;
-    font-size: 16px;
-    font-family: "Poppins", sans-serif;
-    box-sizing: border-box;
-  }
-
-  input[type="submit"] {
-    background-color: #000;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  .select {
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 100%;
-    border: 2px solid #000;
-    border-radius: 4px;
-    font-size: 16px;
-    box-sizing: border-box;
-  }
-
-  #user-image {
-    height: 50px;
-    width: 50px;
-  }
-</style>
-
-<body>
-  <div class="login-box">
-    <div style="
-          padding-bottom: 28px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        ">
-      <p>Login as</p>
-      <img id="user-image" src="{{customer}}" alt="Student Image" />
+{% block content %}
+<div class="m-0 p-0 flex min-h-screen">
+  <!-- Left Pane -->
+  <div class="w-1/2  flex items-center justify-center p-12">
+    <div class="text-white max-w-lg">
+      <h1 class="text-4xl font-bold mb-6">Welcome to our Canteen Management System</h1>
+      <p class="text-xl opacity-80">Sign in to our platform to enjoy seamless dining experience with easy ordering and
+        payment.</p>
     </div>
-    <form method="POST" action="/login">
-      <select name="user-type" class="select" onchange="updateImage(this.value)">
-        <option value="customer">Customer</option>
-        <option value="manager">Canteen Manager</option>
-        <option value="admin">Admin</option>
-      </select>
-      <input type="text" name="username" placeholder="Username" required />
-      <br />
-      <input type="password" name="password" placeholder="Password" required />
-      <br />
-      <input type="submit" value="Login" />
-      <br>
-      <h3>Don't have an account?</h3>
-      <button class="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"><a href="{{ url_for('signup') }}">Signup</a></button>
-      </br>
-    </form>
   </div>
-  <script>
-    function updateImage(userType) {
-      const image = document.getElementById("user-image");
-      if (userType === "customer") {
-        image.src = "{{customer}}";
-      } else if (userType === "manager") {
-        image.src = "{{manager}}";
-      } else if (userType === "admin") {
-        image.src = "{{admin}}";
-      } else {
-        image.src = "../images/placeholder.png";
-      }
-    }
-  </script>
-</body>
 
-</html>
+  <!-- Right Pane with Form -->
+  <div class="w-1/2 flex justify-center items-center p-12">
+    <div class="w-full max-w-md p-8 text-center border border-gray-200 rounded-xl shadow-xl bg-white">
+      <h2 class="text-2xl font-semibold mb-8">Sign In</h2>
+      <form method="POST" class="space-y-6">
+        {% csrf_token %}
+        <div class="text-left">
+          <input type="text" name="username" id="username" placeholder="Username" required
+            class="form-input w-full p-2" />
+        </div>
+        <div class="text-left">
+          <input type="password" name="password" id="password" placeholder="Password" required
+            class="form-input w-full p-2" />
+        </div>
+        <input type="submit" value="Sign In" class="submit_button w-full text-white p-2 rounded-lg" />
+      </form>
+      <p class="mt-6 text-sm">Don't have an account? <a href="#" class="text-gray-700">Sign up</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}
