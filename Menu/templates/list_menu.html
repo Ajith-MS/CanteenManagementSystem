@@ -3,48 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <title>E D E R E</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap&family=Satisfy&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet"
+    href="https://cdn-uicons.flaticon.com/2.2.0/uicons-regular-straight/css/uicons-regular-straight.css" />
 </head>
-<body>
-    <div class="container mt-5">
-        <h1 class="text-center">Menu List</h1>
-        <table class="table table-bordered table-striped mt-4">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Item Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Veg Burger</td>
-                    <td>A delicious veggie patty with fresh lettuce and tomato.</td>
-                    <td>$5.99</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Chicken Sandwich</td>
-                    <td>Grilled chicken with mayo and lettuce on a toasted bun.</td>
-                    <td>$6.99</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>French Fries</td>
-                    <td>Crispy golden fries served with ketchup.</td>
-                    <td>$2.99</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Cold Coffee</td>
-                    <td>Chilled coffee with a hint of chocolate.</td>
-                    <td>$3.50</td>
-                </tr>
-            </tbody>
-        </table>
+
+<style>
+  body {
+    font-family: "Inter", sans-serif;
+  }
+
+  .logo {
+    font-family: "Satisfy", cursive;
+    font-size: 2.5rem;
+  }
+
+  .filter-btn {
+    background-color: #fff27e;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+
+  .filter-btn:hover {
+    background-color: #ff9035;
+  }
+
+  .filter-btn.active {
+    background-color: #ff7f07;
+    border: #ff7f07 2px solid;
+  }
+</style>
+
+<body class="font-inter bg-white fade">
+  <nav class="bg-white py-4 shadow-md">
+    <div class="max-w mx-auto px-5 flex justify-between items-center">
+      <div class="flex-grow text-center ">
+        <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Edere</span>
+      </div>
+      <div class="flex space-x-4 ml-auto">
+        <a href="" class="text-gray-800 font-semibold text-lg">Profile</a>
+        <a href="" class="text-gray-800 font-semibold text-lg">Orders</a>
+        <a href="" class="text-gray-800 font-semibold text-lg">Logout</a>
+      </div>
     </div>
+  </nav>
+
+ 
+
+
+  <div class="flex mt-8">
+    <section class="w-6/10 p-8">
+      <div class="mb-4 flex space-x-2">
+        <button class="filter-btn" onclick="filterMenu('all')">All</button>
+        <button class="filter-btn" onclick="filterMenu('veg')">Veg</button>
+        <button class="filter-btn" onclick="filterMenu('nonveg')">Non-Veg</button>
+        <button class="filter-btn" onclick="filterMenu('snacks')">Snacks</button>
+        <button class="filter-btn" onclick="filterMenu('drinks')">Drinks</button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+        {% for item in items %}
+     
+  
+        <div class="menu-item rounded-lg shadow-lg overflow-hidden" data-category="{{ item.foodtype }}">
+          <img class="w-full h-32 object-cover" src="\media\{{item.image}}" alt="{{ item.name }} Image" />
+          <div class="p-4">
+            <h3 class="text-xl font-semibold mb-2">{{ item.name }}</h3>
+            <p class="text-gray-600 mb-3">Category: {{ item.foodtype }}</p>
+            <p class="text-gray-600 mb-3">Price: {{ item.price }}</p>
+            <p class="text-gray-600 mb-3">Availability: {{ item.quantity }}</p>
+            {% if item.quantity == 0 %}
+              {% if item.availability != "Available" %}
+              <p class="text-gray-400">OUT OF ORDER</p>
+              {% endif %}
+            {% else %}
+            <form action="" method="post">
+              {% csrf_token %}
+              <button type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+                Add to Cart
+              </button>
+            </form>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <aside class="w-4/10 p-8 bg-white shadow-md rounded-lg">
+      <h1 class="text-3xl font-bold text-center mb-8">Your Cart</h1>
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="text-left">Item Name</th>
+            <th class="text-left">Quantity</th>
+            <th class="text-left">Price</th>
+            <th class="text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr class="border-b border-gray-200 py-2">
+            <td class="font-semibold">{{ item.name }}</td>
+            <td class="text-blue-500 font-bold">{{ item.quantity }}</td>
+            <td class="text-green-500">{{ item.price }}</td>
+            <td>
+              <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <button type="submit" class="text-red-500 font-bold py-1 px-3">
+                  <i class="fi fi-rs-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center text-gray-500 py-2">
+              Your cart is empty.
+            </td>
+          </tr>
+          {% endfor %}
+          <tr class="border-t border-gray-200 py-2">
+            <td colspan="2" class="font-bold text-xl">Total</td>
+            <td colspan="2" class="text-green-500 font-bold text-xl">
+              {{ total_price }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div class="mt-4">
+        <form action="" method="get">
+          <button type="submit" class="bg-black hover:bg-gray-700 text-white font-bold py-3 px-6 rounded block mx-auto">
+            Checkout
+          </button>
+        </form>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    function filterMenu(category) {
+      const menuItems = document.querySelectorAll('.menu-item');
+      menuItems.forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(btn => {
+          btn.classList.remove('active');
+        });
+        btn.classList.add('active');
+      });
+    });
+
+    function saveScrollPosition() {
+      localStorage.setItem('scrollPosition', window.scrollY);
+    }
+
+    function restoreScrollPosition() {
+      const scrollPosition = localStorage.getItem('scrollPosition');
+      if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+        localStorage.removeItem('scrollPosition');
+      }
+    }
+
+    window.addEventListener('scroll', saveScrollPosition);
+    window.addEventListener('load', restoreScrollPosition); 
+  </script>
+
 </body>
+
 </html>
