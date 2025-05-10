@@ -2,3 +2,6 @@
 !**/migrations/__init__.py
 
 env/*
+
+venv/*
+__pycache__/
