@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E D E R E</title>
-  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap&family=Satisfy&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet"
-    href="https://cdn-uicons.flaticon.com/2.2.0/uicons-regular-straight/css/uicons-regular-straight.css" />
-</head>
+{% extends 'base.html' %}
+{% load static %}
 
+{% block title %}Sign In{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
 <style>
   body {
     font-family: "Inter", sans-serif;
@@ -45,7 +38,7 @@
   <nav class="bg-white py-4 shadow-md">
     <div class="max-w mx-auto px-5 flex justify-between items-center">
       <div class="flex-grow text-center ">
-        <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Edere</span>
+        <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs</span>
       </div>
       <div class="flex space-x-4 ml-auto">
         <a href="" class="text-gray-800 font-semibold text-lg">Profile</a>
@@ -54,9 +47,6 @@
       </div>
     </div>
   </nav>
-
- 
-
 
   <div class="flex mt-8">
     <section class="w-6/10 p-8">
@@ -70,8 +60,8 @@
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
         {% for item in items %}
-     
-  
+
+
         <div class="menu-item rounded-lg shadow-lg overflow-hidden" data-category="{{ item.foodtype }}">
           <img class="w-full h-32 object-cover" src="\media\{{item.image}}" alt="{{ item.name }} Image" />
           <div class="p-4">
@@ -80,9 +70,9 @@
             <p class="text-gray-600 mb-3">Price: {{ item.price }}</p>
             <p class="text-gray-600 mb-3">Availability: {{ item.quantity }}</p>
             {% if item.quantity == 0 %}
-              {% if item.availability != "Available" %}
-              <p class="text-gray-400">OUT OF ORDER</p>
-              {% endif %}
+            {% if item.availability != "Available" %}
+            <p class="text-gray-400">OUT OF ORDER</p>
+            {% endif %}
             {% else %}
             <form action="" method="post">
               {% csrf_token %}
@@ -189,6 +179,5 @@
     window.addEventListener('load', restoreScrollPosition); 
   </script>
 
-</body>
 
-</html>
+  {% endblock %}

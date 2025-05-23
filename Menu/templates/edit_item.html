@@ -1,53 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Menu Item</title>
-</head>
-<body>
-    <h2>Edit Menu Item</h2>
+{% extends 'base.html' %}
+{% load static %}
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+{% block title %}Sign In{% endblock %}
 
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value="{{ item.name }}"><br><br>
+{% block extra_css %}
+{% endblock %}
 
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" value="{{ item.price }}"><br><br>
+{% block content %}
+<h2>Edit Menu Item</h2>
 
-        <label for="quantity">Quantity:</label><br>
-        <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"><br><br>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-        <label for="category">Category:</label><br>
-        <input type="text" id="category" name="category" value="{{ item.category }}"><br><br>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name" value="{{ item.name }}"><br><br>
 
-        <label for="itemtype">Item Type:</label><br>
-        <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}"><br><br>
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" value="{{ item.price }}"><br><br>
 
-        <label for="availablity">Availability:</label><br>
-        <select id="availablity" name="availablity">
-            <option value="True" {% if item.availablity == 'Yes' %}selected{% endif %}>Yes</option>
-            <option value="False" {% if item.availablity == 'No' %}selected{% endif %}>No</option>
-        </select><br><br>
+    <label for="quantity">Quantity:</label><br>
+    <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"><br><br>
 
-        <label for="tags">Tags (hold Ctrl to select multiple):</label><br>
-        <select id="tags" name="tags" multiple>
-            {% for tag in all_tags %}
-                <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
-            {% endfor %}
-        </select><br><br>
+    <label for="category">Category:</label><br>
+    <input type="text" id="category" name="category" value="{{ item.category }}"><br><br>
 
-        <label>Current Image:</label><br>
-        {% if item.image %}
-            <img src="{{ item.image.url }}" alt="Current Image" width="150"><br><br>
-        {% else %}
-            <p>No image uploaded.</p>
-        {% endif %}
+    <label for="itemtype">Item Type:</label><br>
+    <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}"><br><br>
 
-        <label for="image">Upload New Image:</label><br>
-        <input type="file" id="image" name="image"><br><br>
+    <label for="availablity">Availability:</label><br>
+    <select id="availablity" name="availablity">
+        <option value="True" {% if item.availablity=='Yes' %}selected{% endif %}>Yes</option>
+        <option value="False" {% if item.availablity=='No' %}selected{% endif %}>No</option>
+    </select><br><br>
 
-        <button type="submit">Update Item</button>
-    </form>
-</body>
-</html>
+    <label for="tags">Tags (hold Ctrl to select multiple):</label><br>
+    <select id="tags" name="tags" multiple>
+        {% for tag in all_tags %}
+        <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label>Current Image:</label><br>
+    {% if item.image %}
+    <img src="{{ item.image.url }}" alt="Current Image" width="150"><br><br>
+    {% else %}
+    <p>No image uploaded.</p>
+    {% endif %}
+
+    <label for="image">Upload New Image:</label><br>
+    <input type="file" id="image" name="image"><br><br>
+
+    <button type="submit">Update Item</button>
+</form>
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% endif %}
+{% endblock %}
