@@ -61,58 +61,6 @@
         {% endfor %}
       </div>
     </section>
-
-    <aside class="w-4/10 p-8 bg-white shadow-md rounded-lg">
-      <h1 class="text-3xl font-bold text-center mb-8">Your Cart</h1>
-      <table class="w-full">
-        <thead>
-          <tr>
-            <th class="text-left">Item Name</th>
-            <th class="text-left">Quantity</th>
-            <th class="text-left">Price</th>
-            <th class="text-left">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in cart_items %}
-          <tr class="border-b border-gray-200 py-2">
-            <td class="font-semibold">{{ item.name }}</td>
-            <td class="text-blue-500 font-bold">{{ item.quantity }}</td>
-            <td class="text-green-500">{{ item.price }}</td>
-            <td>
-              <form action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <button type="submit" class="text-red-500 font-bold py-1 px-3">
-                  <i class="fi fi-rs-trash"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="4" class="text-center text-gray-500 py-2">
-              Your cart is empty.
-            </td>
-          </tr>
-          {% endfor %}
-          <tr class="border-t border-gray-200 py-2">
-            <td colspan="2" class="font-bold text-xl">Total</td>
-            <td colspan="2" class="text-green-500 font-bold text-xl">
-              {{ total_price }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-
-      <div class="mt-4">
-        <form action="" method="get">
-          <button type="submit" class="bg-black hover:bg-gray-700 text-white font-bold py-3 px-6 rounded block mx-auto">
-            Checkout
-          </button>
-        </form>
-      </div>
-    </aside>
   </div>
 
   <script>

@@ -1,51 +1,204 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Add New Item{% endblock %}
 
 {% block extra_css %}
+<style>
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        border: 1px solid #ccc;
+        padding: 8px;
+        border-radius: 4px;
+        min-height: 40px;
+        align-items: center;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        background-color: #f6f6f6;
+        color: #333;
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        margin: 2px;
+    }
+
+    .tag-remove {
+        margin-left: 8px;
+        cursor: pointer;
+        color: #ff4d4d;
+        font-weight: bold;
+    }
+
+    .tag-input {
+        border: none;
+        outline: none;
+        flex-grow: 1;
+        min-width: 100px;
+        padding: 4px;
+    }
+
+    .tag-input:focus {
+        outline: none;
+    }
+
+    .add-tag-button {
+        background-color: #ec5228;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-left: 8px;
+    }
+
+    .add-tag-button:hover {
+        background-color: #ec5228;
+    }
+
+    /* Ensure the select element is hidden but still submits data */
+    #tags {
+        display: none;
+    }
+
+    /* Style for the form inputs to match your existing design */
+    .w-full.p-2.border.rounded-md {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<form method="POST" enctype="multipart/form-data" action="">
+<form class="m-12 space-y-4 max-w-md" method="POST" enctype="multipart/form-data" action="">
     {% csrf_token %}
-    <label for="name">Item Name:</label>
-    <input type="text" name="name" id="name" required><br><br>
+    <h1 class="text-xl font-semibold">Add New Item</h1>
 
-    <label for="price">Price:</label>
-    <input type="number" name="price" id="price" step="0.01" required><br><br>
+    <div>
+        <label for="name" class="block mb-1">Item Name:</label>
+        <input type="text" name="name" id="name" required class="w-full p-2 border rounded-md" />
+    </div>
 
-    <label for="quantity">Quantity:</label>
-    <input type="number" name="quantity" id="quantity" required><br><br>
+    <div>
+        <label for="price" class="block mb-1">Price:</label>
+        <input type="number" name="price" id="price" step="0.01" required class="w-full p-2 border rounded-md" />
+    </div>
 
-    <label for="category">Category:</label>
-    <input type="text" name="category" id="category"><br><br>
+    <div>
+        <label for="quantity" class="block mb-1">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" required class="w-full p-2 border rounded-md" />
+    </div>
 
-    <label for="itemtype">Item Type:</label>
-    <input type="text" name="itemtype" id="itemtype"><br><br>
+    <div>
+        <label for="category" class="block mb-1">Category:</label>
+        <input type="text" name="category" id="category" class="w-full p-2 border rounded-md" />
+    </div>
 
-    <label for="image">Image:</label>
-    <input type="file" name="image" id="image" accept="image/*"><br><br>
+    <div>
+        <label for="itemtype" class="block mb-1">Item Type:</label>
+        <input type="text" name="itemtype" id="itemtype" class="w-full p-2 border rounded-md" />
+    </div>
 
-    <label for="availablity">Availability:</label>
-    <select name="availablity" id="availablity">
-        <option value="True">Available</option>
-        <option value="False">Unavailable</option>
-    </select><br><br>
+    <div>
+        <label for="image" class="block mb-1">Image:</label>
+        <input type="file" name="image" id="image" accept="image/*" class="w-full p-2 border rounded-md" />
+    </div>
 
-    <label for="tags">Tags:</label>
-    <select name="tags" id="tags" multiple>
-        <option value="New">New</option>
-        <option value="Sale">Sale</option>
-        <option value="Popular">Popular</option>
-        <option value="Limited">Limited</option>
-    </select><br><br>
+    <div>
+        <label for="availablity" class="block mb-1">Availability:</label>
+        <select name="availablity" id="availablity" class="w-full p-2 border rounded-md">
+            <option value="True">Available</option>
+            <option value="False">Unavailable</option>
+        </select>
+    </div>
 
-    <button type="submit">Add Item</button>
+    <div>
+        <label for="tags" class="block mb-1">Tags:</label>
+        <div class="tags-container" id="tags-container">
+            <!-- Predefined tags will be added here via JavaScript -->
+            <input type="text" class="tag-input" id="tag-input" placeholder="Add a tag" />
+            <button type="button" class="add-tag-button" id="add-tag-button">+</button>
+        </div>
+        <!-- Hidden select to store tags for form submission -->
+        <select name="tags" id="tags" multiple>
+            <!-- Options will be managed by JavaScript -->
+        </select>
+    </div>
+
+    <button type="submit" class="submit_button text-white py-2 px-4 rounded-md w-full">Add Item</button>
 </form>
 
 {% if error %}
 <p style="color: red;">{{ error }}</p>
 {% endif %}
+
+{% block extra_js %}
+<script>
+    const tagsContainer = document.getElementById('tags-container');
+    const tagInput = document.getElementById('tag-input');
+    const addTagButton = document.getElementById('add-tag-button');
+    const tagsSelect = document.getElementById('tags');
+
+    // Function to add a tag to the container and select element
+    function addTag(tagText) {
+        if (tagText.trim() === '') return;
+
+        // Prevent duplicate tags (case-insensitive)
+        const existingTags = Array.from(tagsSelect.options).map(opt => opt.value.toLowerCase());
+        if (existingTags.includes(tagText.toLowerCase())) return;
+
+        // Create tag element
+        const tagElement = document.createElement('span');
+        tagElement.className = 'tag';
+        tagElement.innerHTML = `${tagText}<span class="tag-remove" data-tag="${tagText}">×</span>`;
+        tagsContainer.insertBefore(tagElement, tagInput);
+
+        // Add to hidden select for form submission
+        const option = document.createElement('option');
+        option.value = tagText;
+        option.selected = true;
+        tagsSelect.appendChild(option);
+
+        // Clear input
+        tagInput.value = '';
+    }
+
+    // Function to remove a tag
+    function removeTag(tagText) {
+        const tagElements = tagsContainer.querySelectorAll('.tag');
+        tagElements.forEach(element => {
+            if (element.querySelector('.tag-remove').dataset.tag === tagText) {
+                element.remove();
+            }
+        });
+        const options = tagsSelect.querySelectorAll('option');
+        options.forEach(option => {
+            if (option.value === tagText) {
+                option.remove();
+            }
+        });
+    }
+
+    // Handle tag addition on button click
+    addTagButton.addEventListener('click', () => {
+        addTag(tagInput.value.trim());
+    });
+
+    // Handle tag removal
+    tagsContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tag-remove')) {
+            const tagText = e.target.dataset.tag;
+            removeTag(tagText);
+        }
+    });
+</script>
+{% endblock %}
 
 {% endblock %}
