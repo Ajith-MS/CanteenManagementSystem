@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import list_menu, create_item, edit_item
-app_name = "Menu"
+app_name = "Manager"
 
 urlpatterns = [
     path("list/", list_menu, name="listmenu"),

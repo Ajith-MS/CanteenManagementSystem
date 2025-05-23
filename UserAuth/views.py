@@ -4,8 +4,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import get_user_model
 from UserAuth.models import CustomUser  
 from django.contrib.auth import authenticate, login 
-from django.http import JsonResponse
-import json
+
 
 # Create your views here.
 def user_signup(request):  
@@ -32,64 +31,30 @@ def user_signup(request):
 
         # Check if the phone number is already taken
         elif phone_number in all_numbers:
-            messages.error(request, "Phonenumber already exists!!")\
+            messages.error(request, "Phonenumber already exists!!")
             
         else:
             # create a new user
             User.objects.create_user(username=user_name, first_name=first_name, last_name=last_name, email=email, password=password, phone_number=phone_number)
             messages.success(request, "Account created successfully")
             return redirect('UserAuth:usersignin')
-    return None
+    return render(request, "signup.html")
 
 
-# def user_signin(request):
-
-#     if request.method == 'POST':
-#         username = request.POST.get("username")
-#         password = request.POST.get("password")
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user)
-#             return redirect('Menu:listmenu')
-#         else:
-#             messages.error(request, "Invalid username or password")
-#     return JsonResponse(request, "signin.html")
 def user_signin(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            username = data.get("username")
-            password = data.get("password")
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
 
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            user = {
-                "username": user.username,
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "email": user.email,
-                "phone_number": user.phone_number
-            }
-            return JsonResponse({'status': 'success', 'message': 'Login successful', 'user': user}, status=200)
+            return redirect('Menu:listmenu')
         else:
-            return JsonResponse({'status': 'error', 'message': 'Invalid username or password'}, status=401)
-
-    return JsonResponse({'error': 'Only POST method allowed'}, status=405)
-    # return JsonResponse({
-    #     "message": "Hello from vali!",
-    #     "status": "success"
-    # })
+            messages.error(request, "Invalid username or password")
+    return render(request, "signin.html")
 
 
 def logout(request):
     logout(request)
     return redirect('UserAuth:usersignin')
-
-def test_data(request):
-    return JsonResponse({
-        "message": "Hello from Django!",
-        "status": "success"
-    })

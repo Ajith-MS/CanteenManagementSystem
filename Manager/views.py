@@ -42,7 +42,7 @@ def create_item(request):
         file_path = default_storage.save(f'menu_images/{new_filename}', ContentFile(image.read()))
 
 
- # Create a new Menu object with the saved file path
+        # Create a new Menu object with the saved file path
         Menu.objects.create(
             item_id=item_id,
             name=name,
@@ -55,7 +55,7 @@ def create_item(request):
             tags=tags
         )
         # Redirect to the list menu page after creating the item
-        return redirect('Menu:listmenu')
+        return redirect('Manager:listmenu')
     return render(request, "create_item.html")
 
 def edit_item(request, item_id):
@@ -85,5 +85,5 @@ def edit_item(request, item_id):
 
         # Save the updated item
         item.save()
-        return redirect('Menu:listmenu')
+        return redirect('Manager:listmenu')
     return render(request, "edit_item.html", {'item': item})
