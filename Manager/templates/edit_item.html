@@ -60,6 +60,69 @@
     .btn-secondary:hover {
         background: #4b5563;
     }
+
+    .image-preview-container {
+        background: #f9fafb;
+        border: 2px dashed #d1d5db;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        min-height: 400px;
+    }
+
+    .preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .preview-item {
+        position: relative;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .preview-image {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .remove-btn:hover {
+        background: #dc2626;
+    }
+
+    .main-layout {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .main-layout {
+            grid-template-columns: 1fr;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -69,7 +132,7 @@
     <nav class="bg-white py-4 shadow-md mb-8">
         <div class="max-w mx-auto px-5 flex justify-between items-center">
             <div class="flex-grow text-center">
-                <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs Dashboard</span>
+                <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs</span>
             </div>
             <div class="flex space-x-4 ml-auto">
                 <a href="" class="text-gray-800 font-semibold text-lg">Profile</a>
@@ -79,88 +142,149 @@
         </div>
     </nav>
 
-    <div class="max-w-2xl mx-auto px-4">
+    <div class="max-w-6xl mx-auto px-4">
         <div class="flex items-center justify-between mb-6">
             <h2 class="text-2xl font-bold text-gray-900">Edit Menu Item</h2>
             <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">← Back to Menu</a>
         </div>
 
-        <div class="form-container p-6">
-            <form method="POST" enctype="multipart/form-data" class="space-y-4">
-                {% csrf_token %}
+        <div class="main-layout">
+            <div class="form-container p-6">
+                <form method="POST" enctype="multipart/form-data" class="space-y-4" id="editItemForm">
+                    {% csrf_token %}
 
-                <div>
-                    <label for="name" class="form-label">Name:</label>
-                    <input type="text" id="name" name="name" value="{{ item.name }}" class="form-input" required>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="price" class="form-label">Price:</label>
-                        <input type="number" id="price" name="price" value="{{ item.price }}" class="form-input"
-                            step="0.01" required>
+                        <label for="name" class="form-label">Name:</label>
+                        <input type="text" id="name" name="name" value="{{ item.name }}" class="form-input" required>
                     </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="price" class="form-label">Price:</label>
+                            <input type="number" id="price" name="price" value="{{ item.price }}" class="form-input"
+                                step="0.01" required>
+                        </div>
+                        <div>
+                            <label for="quantity" class="form-label">Quantity:</label>
+                            <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"
+                                class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="category" class="form-label">Category:</label>
+                            <input type="text" id="category" name="category" value="{{ item.category }}"
+                                class="form-input" required>
+                        </div>
+                        <div>
+                            <label for="itemtype" class="form-label">Item Type:</label>
+                            <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}"
+                                class="form-input" required>
+                        </div>
+                    </div>
+
                     <div>
-                        <label for="quantity" class="form-label">Quantity:</label>
-                        <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"
-                            class="form-input" required>
+                        <label for="availablity" class="form-label">Availability:</label>
+                        <select id="availablity" name="availablity" class="form-input" required>
+                            <option value="Yes" {% if item.availablity=='Yes' %}selected{% endif %}>Yes</option>
+                            <option value="No" {% if item.availablity=='No' %}selected{% endif %}>No</option>
+                        </select>
                     </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="category" class="form-label">Category:</label>
-                        <input type="text" id="category" name="category" value="{{ item.category }}" class="form-input"
-                            required>
+                        <label for="tags" class="form-label">Tags (hold Ctrl to select multiple):</label>
+                        <select id="tags" name="tags" multiple class="form-input" style="height: 100px;">
+                            {% for tag in all_tags %}
+                            <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
+
                     <div>
-                        <label for="itemtype" class="form-label">Item Type:</label>
-                        <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}" class="form-input"
-                            required>
+                        <label for="images" class="form-label">Upload Images:</label>
+                        <input type="file" id="images" name="images" class="form-input" accept="image/*" multiple>
+                        <p class="text-sm text-gray-500 mt-1">You can select multiple images at once</p>
                     </div>
+
+                    <div class="flex space-x-4 pt-4">
+                        <button type="submit" class="btn-primary">Update Item</button>
+                        <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">Cancel</a>
+                    </div>
+                </form>
+
+                {% if error %}
+                <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {{ error }}
                 </div>
-
-                <div>
-                    <label for="availablity" class="form-label">Availability:</label>
-                    <select id="availablity" name="availablity" class="form-input" required>
-                        <option value="Yes" {% if item.availablity=='Yes' %}selected{% endif %}>Yes</option>
-                        <option value="No" {% if item.availablity=='No' %}selected{% endif %}>No</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="tags" class="form-label">Tags (hold Ctrl to select multiple):</label>
-                    <select id="tags" name="tags" multiple class="form-input" style="height: 100px;">
-                        {% for tag in all_tags %}
-                        <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div>
-                    <label class="form-label">Current Image:</label>
-                    {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="Current Image" class="w-32 h-32 object-cover rounded-lg mb-2">
-                    {% else %}
-                    <p class="text-gray-500 mb-2">No image uploaded.</p>
-                    {% endif %}
-
-                    <label for="image" class="form-label">Upload New Image:</label>
-                    <input type="file" id="image" name="image" class="form-input" accept="image/*">
-                </div>
-
-                <div class="flex space-x-4 pt-4">
-                    <button type="submit" class="btn-primary">Update Item</button>
-                    <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">Cancel</a>
-                </div>
-            </form>
-
-            {% if error %}
-            <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                {{ error }}
+                {% endif %}
             </div>
-            {% endif %}
+
+            <div class="image-preview-container">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Image Previews</h3>
+
+                {% if item.image %}
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600 mb-2">Current Image:</p>
+                    <img src="{{ item.image.url }}" alt="Current Image"
+                        class="w-32 h-32 object-cover rounded-lg mx-auto">
+                </div>
+                {% endif %}
+
+                <div id="imagePreviewArea">
+                    <p class="text-gray-500 text-sm">Select images to see previews here</p>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('images').addEventListener('change', function (e) {
+            const files = Array.from(e.target.files);
+            const previewArea = document.getElementById('imagePreviewArea');
+
+            if (files.length === 0) {
+                previewArea.innerHTML = '<p class="text-gray-500 text-sm">Select images to see previews here</p>';
+                return;
+            }
+
+            previewArea.innerHTML = '<div class="preview-grid" id="previewGrid"></div>';
+            const previewGrid = document.getElementById('previewGrid');
+
+            files.forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Preview" class="preview-image">
+                            <button type="button" class="remove-btn" onclick="removeImage(${index})">×</button>
+                        `;
+                        previewGrid.appendChild(previewItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function removeImage(index) {
+            const input = document.getElementById('images');
+            const files = Array.from(input.files);
+
+            // Create new FileList without the removed file
+            const dt = new DataTransfer();
+            files.forEach((file, i) => {
+                if (i !== index) {
+                    dt.items.add(file);
+                }
+            });
+
+            input.files = dt.files;
+
+            // Trigger change event to update preview
+            input.dispatchEvent(new Event('change'));
+        }
+    </script>
 </body>
 {% endblock %}
