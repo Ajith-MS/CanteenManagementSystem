@@ -87,3 +87,10 @@ def edit_item(request, item_id):
         item.save()
         return redirect('Manager:listmenu')
     return render(request, "edit_item.html", {'item': item})
+
+def delete_item(request, item_id):
+    # Handle the deletion of a menu item
+    item = Menu.objects.get(item_id=item_id)
+    if request.method == 'POST':
+        item.delete()
+    return redirect('Manager:listmenu')

@@ -42,7 +42,7 @@ def user_signin(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('Menu:listmenu')
+            return redirect('Manager:listmenu')
         else:
             messages.error(request, "Invalid username or password")
     return render(request, "signin.html")
