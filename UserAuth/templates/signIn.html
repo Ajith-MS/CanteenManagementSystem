@@ -7,21 +7,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="m-0 p-0 flex min-h-screen">
+<div class="m-0 flex min-h-screen">
   <!-- Left Pane -->
-  <div class="w-1/2  flex items-center justify-center p-12">
-    <div class="text-white max-w-lg">
-      <h1 class="text-4xl font-bold mb-6">Welcome to our Canteen Management System</h1>
-      <p class="text-xl opacity-80">Sign in to our platform to enjoy seamless dining experience with easy ordering and
+  <div class="w-8/12 m-2 flex  p-12 bg-cover bg-center rounded-lg"
+    style="background-image: url('{% static 'images/intro-image.jpg' %}')">
+    <div class="relative text-white max-w-lg">
+      <h1 class="text-7xl font-bold mb-6">Welcome to our Canteen Management System</h1>
+      <p class="text-xl">Sign in to our platform to enjoy seamless dining experience with easy ordering and
         payment.</p>
     </div>
   </div>
 
   <!-- Right Pane with Form -->
-  <div class="w-1/2 flex justify-center items-center p-12">
-    <div class="w-full max-w-md p-8 text-center border border-gray-200 rounded-xl shadow-xl bg-white">
-      <h2 class="text-2xl font-semibold mb-8">Sign In</h2>
-      <form method="POST" class="space-y-6">
+  <div class="w-4/12 flex justify-center items-center">
+    <div class="w-full  max-w-md p-8 text-center  rounded-xl bg-white">
+      <h2 class="text-4xl font-semibold mb-8">Sign In</h2>
+      <form method="POST" class="space-y-4 ">
         {% csrf_token %}
         <div class="text-left">
           <input type="text" name="username" id="username" placeholder="Username" required
@@ -33,7 +34,8 @@
         </div>
         <input type="submit" value="Sign In" class="submit_button w-full text-white p-2 rounded-lg" />
       </form>
-      <p class="mt-6 text-sm">Don't have an account? <a href="{% url 'UserAuth:usersignup' %}" class="text-gray-700">Sign up</a></p>
+      <p class="mt-6 text-sm">Don't have an account? <a href="{% url 'UserAuth:usersignup' %}"
+          class="text-gray-700">Sign up</a></p>
     </div>
   </div>
 </div>

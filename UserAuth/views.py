@@ -14,35 +14,28 @@ def user_signup(request):
     all_emails = User.objects.values_list("email", flat=True)
     if request.method == 'POST':
         user_name = request.POST.get("username")
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
+        full_name = request.POST.get("full_name")
         email = request.POST.get("email")  
         phone_number = request.POST.get("phone_number")
         password = request.POST.get("password")
-
-
         # Check if the username is already taken
         if user_name in all_user:
             messages.error(request, "Username already exists!!")
-
         # Check if the email is already taken
         elif email in all_emails:
             messages.error(request, "Email already exists!!")
-
         # Check if the phone number is already taken
         elif phone_number in all_numbers:
             messages.error(request, "Phonenumber already exists!!")
-            
         else:
             # create a new user
-            User.objects.create_user(username=user_name, first_name=first_name, last_name=last_name, email=email, password=password, phone_number=phone_number)
+            User.objects.create_user(username=user_name, full_name=full_name, email=email, password=password, phone_number=phone_number)
             messages.success(request, "Account created successfully")
             return redirect('UserAuth:usersignin')
     return render(request, "signup.html")
 
 
 def user_signin(request):
-
     if request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
