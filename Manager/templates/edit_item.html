@@ -1,58 +1,166 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Edit Menu Item{% endblock %}
 
 {% block extra_css %}
+<style>
+    .form-container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 500;
+        color: #374151;
+    }
+
+    .btn-primary {
+        background: #3b82f6;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-primary:hover {
+        background: #2563eb;
+    }
+
+    .btn-secondary {
+        background: #6b7280;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-secondary:hover {
+        background: #4b5563;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<h2>Edit Menu Item</h2>
 
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+<body class="font-inter bg-gray-50">
+    <nav class="bg-white py-4 shadow-md mb-8">
+        <div class="max-w mx-auto px-5 flex justify-between items-center">
+            <div class="flex-grow text-center">
+                <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs Dashboard</span>
+            </div>
+            <div class="flex space-x-4 ml-auto">
+                <a href="" class="text-gray-800 font-semibold text-lg">Profile</a>
+                <a href="" class="text-gray-800 font-semibold text-lg">Orders</a>
+                <a href="" class="text-gray-800 font-semibold text-lg">Logout</a>
+            </div>
+        </div>
+    </nav>
 
-    <label for="name">Name:</label><br>
-    <input type="text" id="name" name="name" value="{{ item.name }}"><br><br>
+    <div class="max-w-2xl mx-auto px-4">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">Edit Menu Item</h2>
+            <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">← Back to Menu</a>
+        </div>
 
-    <label for="price">Price:</label><br>
-    <input type="number" id="price" name="price" value="{{ item.price }}"><br><br>
+        <div class="form-container p-6">
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
 
-    <label for="quantity">Quantity:</label><br>
-    <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"><br><br>
+                <div>
+                    <label for="name" class="form-label">Name:</label>
+                    <input type="text" id="name" name="name" value="{{ item.name }}" class="form-input" required>
+                </div>
 
-    <label for="category">Category:</label><br>
-    <input type="text" id="category" name="category" value="{{ item.category }}"><br><br>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="price" class="form-label">Price:</label>
+                        <input type="number" id="price" name="price" value="{{ item.price }}" class="form-input"
+                            step="0.01" required>
+                    </div>
+                    <div>
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"
+                            class="form-input" required>
+                    </div>
+                </div>
 
-    <label for="itemtype">Item Type:</label><br>
-    <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}"><br><br>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="category" class="form-label">Category:</label>
+                        <input type="text" id="category" name="category" value="{{ item.category }}" class="form-input"
+                            required>
+                    </div>
+                    <div>
+                        <label for="itemtype" class="form-label">Item Type:</label>
+                        <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}" class="form-input"
+                            required>
+                    </div>
+                </div>
 
-    <label for="availablity">Availability:</label><br>
-    <select id="availablity" name="availablity">
-        <option value="True" {% if item.availablity=='Yes' %}selected{% endif %}>Yes</option>
-        <option value="False" {% if item.availablity=='No' %}selected{% endif %}>No</option>
-    </select><br><br>
+                <div>
+                    <label for="availablity" class="form-label">Availability:</label>
+                    <select id="availablity" name="availablity" class="form-input" required>
+                        <option value="Yes" {% if item.availablity=='Yes' %}selected{% endif %}>Yes</option>
+                        <option value="No" {% if item.availablity=='No' %}selected{% endif %}>No</option>
+                    </select>
+                </div>
 
-    <label for="tags">Tags (hold Ctrl to select multiple):</label><br>
-    <select id="tags" name="tags" multiple>
-        {% for tag in all_tags %}
-        <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
-        {% endfor %}
-    </select><br><br>
+                <div>
+                    <label for="tags" class="form-label">Tags (hold Ctrl to select multiple):</label>
+                    <select id="tags" name="tags" multiple class="form-input" style="height: 100px;">
+                        {% for tag in all_tags %}
+                        <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-    <label>Current Image:</label><br>
-    {% if item.image %}
-    <img src="{{ item.image.url }}" alt="Current Image" width="150"><br><br>
-    {% else %}
-    <p>No image uploaded.</p>
-    {% endif %}
+                <div>
+                    <label class="form-label">Current Image:</label>
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="Current Image" class="w-32 h-32 object-cover rounded-lg mb-2">
+                    {% else %}
+                    <p class="text-gray-500 mb-2">No image uploaded.</p>
+                    {% endif %}
 
-    <label for="image">Upload New Image:</label><br>
-    <input type="file" id="image" name="image"><br><br>
+                    <label for="image" class="form-label">Upload New Image:</label>
+                    <input type="file" id="image" name="image" class="form-input" accept="image/*">
+                </div>
 
-    <button type="submit">Update Item</button>
-</form>
-{% if error %}
-<p style="color: red;">{{ error }}</p>
-{% endif %}
+                <div class="flex space-x-4 pt-4">
+                    <button type="submit" class="btn-primary">Update Item</button>
+                    <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">Cancel</a>
+                </div>
+            </form>
+
+            {% if error %}
+            <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                {{ error }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
 {% endblock %}

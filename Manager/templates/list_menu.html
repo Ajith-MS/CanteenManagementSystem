@@ -1,18 +1,65 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Menu Dashboard{% endblock %}
 
 {% block extra_css %}
+<style>
+  .dashboard-table {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .action-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .edit-btn {
+    background: #3b82f6;
+    color: white;
+  }
+
+  .edit-btn:hover {
+    background: #2563eb;
+  }
+
+  .delete-btn {
+    background: #ef4444;
+    color: white;
+  }
+
+  .delete-btn:hover {
+    background: #dc2626;
+  }
+
+  .add-btn {
+    background: #10b981;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .add-btn:hover {
+    background: #059669;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
 
-<body class="font-inter bg-white fade">
+<body class="font-inter bg-gray-50 fade">
   <nav class="bg-white py-4 shadow-md">
     <div class="max-w mx-auto px-5 flex justify-between items-center">
       <div class="flex-grow text-center ">
-        <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs</span>
+        <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs Dashboard</span>
       </div>
       <div class="flex space-x-4 ml-auto">
         <a href="" class="text-gray-800 font-semibold text-lg">Profile</a>
@@ -22,84 +69,99 @@
     </div>
   </nav>
 
-  <div class="flex mt-8">
-    <section class="w-6/10 p-8">
-      <div class="mb-4 flex space-x-2">
-        <button class="filter-btn" onclick="filterMenu('all')">All</button>
-        <button class="filter-btn" onclick="filterMenu('veg')">Veg</button>
-        <button class="filter-btn" onclick="filterMenu('nonveg')">Non-Veg</button>
-        <button class="filter-btn" onclick="filterMenu('snacks')">Snacks</button>
-        <button class="filter-btn" onclick="filterMenu('drinks')">Drinks</button>
-      </div>
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">Menu Management</h1>
+      <a href="{% url 'Manager:create_item' %}" class="add-btn">+ Add New Item</a>
+    </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-        {% for item in items %}
+    <div class="mb-6 flex space-x-2">
+      <button class="filter-btn px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        onclick="filterMenu('all')">All</button>
+      <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        onclick="filterMenu('veg')">Veg</button>
+      <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        onclick="filterMenu('nonveg')">Non-Veg</button>
+      <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        onclick="filterMenu('snacks')">Snacks</button>
+      <button class="filter-btn px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+        onclick="filterMenu('drinks')">Drinks</button>
+    </div>
 
-
-        <div class="menu-item rounded-lg shadow-lg overflow-hidden" data-category="{{ item.foodtype }}">
-          <img class="w-full h-32 object-cover" src="\media\{{item.image}}" alt="{{ item.name }} Image" />
-          <div class="p-4">
-            <h3 class="text-xl font-semibold mb-2">{{ item.name }}</h3>
-            <p class="text-gray-600 mb-3">Category: {{ item.foodtype }}</p>
-            <p class="text-gray-600 mb-3">Price: {{ item.price }}</p>
-            <p class="text-gray-600 mb-3">Availability: {{ item.quantity }}</p>
-            {% if item.quantity == 0 %}
-            {% if item.availability != "Available" %}
-            <p class="text-gray-400">OUT OF ORDER</p>
-            {% endif %}
-            {% else %}
-            <form action="" method="post">
-              {% csrf_token %}
-              <button type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-200">
-                Add to Cart
-              </button>
-            </form>
-            {% endif %}
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
+    <div class="dashboard-table overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-50 border-b">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          {% for item in items %}
+          <tr class="menu-item hover:bg-gray-50" data-category="{{ item.foodtype }}">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <img class="w-16 h-16 object-cover rounded-lg" src="\media\{{item.image}}" alt="{{ item.name }} Image" />
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-medium text-gray-900">{{ item.name }}</div>
+              <div class="text-sm text-gray-500">ID: {{ item.item_id }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.foodtype }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ item.price }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.quantity }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              {% if item.quantity == 0 %}
+              <span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Out of Stock</span>
+              {% elif item.availablity == "Yes" %}
+              <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Available</span>
+              {% else %}
+              <span
+                class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Unavailable</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+              <a href="{% url 'Manager:edit_item' item.item_id %}" class="action-btn edit-btn">Edit</a>
+              <a href="{% url 'Manager:delete_item' item.item_id %}" class="action-btn delete-btn"
+                onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" class="px-6 py-4 text-center text-gray-500">No menu items found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
     function filterMenu(category) {
       const menuItems = document.querySelectorAll('.menu-item');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+
+      // Update button styles
+      filterBtns.forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white');
+        btn.classList.add('bg-gray-200', 'text-gray-700');
+      });
+      event.target.classList.remove('bg-gray-200', 'text-gray-700');
+      event.target.classList.add('bg-blue-600', 'text-white');
+
+      // Filter items
       menuItems.forEach(item => {
         if (category === 'all' || item.dataset.category === category) {
-          item.style.display = 'block';
+          item.style.display = 'table-row';
         } else {
           item.style.display = 'none';
         }
       });
     }
-
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(btn => {
-          btn.classList.remove('active');
-        });
-        btn.classList.add('active');
-      });
-    });
-
-    function saveScrollPosition() {
-      localStorage.setItem('scrollPosition', window.scrollY);
-    }
-
-    function restoreScrollPosition() {
-      const scrollPosition = localStorage.getItem('scrollPosition');
-      if (scrollPosition) {
-        window.scrollTo(0, parseInt(scrollPosition));
-        localStorage.removeItem('scrollPosition');
-      }
-    }
-
-    window.addEventListener('scroll', saveScrollPosition);
-    window.addEventListener('load', restoreScrollPosition); 
   </script>
-
 
   {% endblock %}
