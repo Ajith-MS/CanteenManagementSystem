@@ -13,12 +13,7 @@ h6 {
 }
 
 .submit_button {
-  background-color: #ec5228; 
-}
-
-input {
-  border: solid 2px #f1f1f1;
-  border-radius: 6px;
+  background-color: #ec5228;
 }
 
 a {
@@ -27,6 +22,16 @@ a {
 
 a:hover {
   color: #ec5228;
+}
+
+.form-input {
+  border: solid 2px #e8e8e8;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  border: solid 2px #ec5228;
 }
 
 .logo {
