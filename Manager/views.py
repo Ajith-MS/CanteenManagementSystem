@@ -29,11 +29,11 @@ def create_item(request):
         quantity = request.POST.get("quantity")
         category = request.POST.get("category")
         itemtype = request.POST.get("itemtype")
-        image = request.FILES.get("image")
+        image = request.FILES.get("images")
         availablity = request.POST.get("availablity")    
         item_id = generate_item_id()
         tags = request.POST.getlist("tags")
-        
+
         # Get the file extension
         file_extension = os.path.splitext(image.name)[1]
         # Create new filename with item_id
@@ -41,7 +41,7 @@ def create_item(request):
         # Save the file with the new name
         file_path = default_storage.save(f'menu_images/{new_filename}', ContentFile(image.read()))
 
-
+        
         # Create a new Menu object with the saved file path
         Menu.objects.create(
             item_id=item_id,
@@ -55,7 +55,7 @@ def create_item(request):
             tags=tags
         )
         # Redirect to the list menu page after creating the item
-        return redirect('Manager:listmenu')
+        return redirect('Manager:list_menu')
     return render(request, "create_item.html")
 
 def edit_item(request, item_id):
@@ -93,4 +93,4 @@ def delete_item(request, item_id):
     item = Menu.objects.get(item_id=item_id)
     if request.method == 'POST':
         item.delete()
-    return redirect('Manager:listmenu')
+    return redirect('Manager:list_menu')
