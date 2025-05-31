@@ -25,29 +25,24 @@
       <form method="POST" class="space-y-4" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="text-left">
-          <input type="text" name="username" id="username" placeholder="Username" required
-            class="form-input w-full p-2" />
+          <c-input name="username" placeholder="Username" required="true" />
         </div>
         <div class="text-left">
-          <input type="text" name="full_name" id="full_name" placeholder="Full Name" required
-            class="form-input w-full p-2" />
+          <c-input name="full_name" placeholder="Full Name" required="true" />
         </div>
         <div class="text-left">
-          <input type="email" name="email" id="email" placeholder="Email" required class="form-input w-full p-2" />
+          <c-input type="email" name="email" placeholder="Email" required="true" />
         </div>
         <div class="text-left">
-          <input type="number" name="phone_number" id="phone_number" placeholder="Phone Number" required
-            class="form-input w-full p-2" />
+          <c-input type="number" name="phone_number" placeholder="Phone Number" required="true" />
         </div>
         <div class="text-left">
-          <input type="password" name="password" id="password" placeholder="Password" required
-            class="form-input w-full p-2" />
+          <c-input type="password" name="password" placeholder="Password" required="true" />
         </div>
         <div class="text-left">
-          <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required
-            class="form-input w-full p-2" />
+          <c-input type="password" name="confirm_password" placeholder="Confirm Password" required="true" />
         </div>
-        <input type="submit" value="Sign Up" class="submit_button w-full text-white p-2 rounded-lg" />
+        <c-submit-button text="Sign Up" />
       </form>
       <p class="mt-6 text-sm">Already have an account? <a href="{% url 'UserAuth:usersignin' %}"
           class="text-gray-700">Sign in</a></p>
