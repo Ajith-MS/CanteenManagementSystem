@@ -29,7 +29,7 @@ def create_item(request):
         quantity = request.POST.get("quantity")
         category = request.POST.get("category")
         itemtype = request.POST.get("itemtype")
-        image = request.FILES.get("images")
+        image = request.FILES.get("image")
         availablity = request.POST.get("availablity")    
         item_id = generate_item_id()
         tags = request.POST.getlist("tags")
