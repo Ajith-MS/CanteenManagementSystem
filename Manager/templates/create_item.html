@@ -3,314 +3,94 @@
 
 {% block title %}Add New Item{% endblock %}
 
-{% block extra_css %}
-<style>
-    .main-container {
-        min-height: 100vh;
-        background-color: #f8f9fa;
-        padding: 2rem 1rem;
-    }
-
-    .form-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        background: white;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-
-    .form-section {
-        flex: 1;
-        padding: 2rem;
-        min-width: 400px;
-    }
-
-    .preview-section {
-        flex: 1;
-        padding: 2rem;
-        background-color: #f8f9fa;
-        border-left: 1px solid #e9ecef;
-        min-width: 400px;
-    }
-
-    .form-title {
-        font-size: 1.75rem;
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 1.5rem;
-        text-align: center;
-    }
-
-    .form-group {
-        margin-bottom: 1.25rem;
-    }
-
-    .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #374151;
-        font-size: 0.95rem;
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 0.75rem;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        background-color: white;
-    }
-
-    .form-input:focus {
-        outline: none;
-        border-color: #ec5228;
-        box-shadow: 0 0 0 3px rgba(236, 82, 40, 0.1);
-    }
-
-    .tags-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        border: 2px solid #e5e7eb;
-        padding: 0.75rem;
-        border-radius: 8px;
-        min-height: 50px;
-        align-items: center;
-        background-color: white;
-        transition: border-color 0.2s;
-    }
-
-    .tags-container:focus-within {
-        border-color: #ec5228;
-        box-shadow: 0 0 0 3px rgba(236, 82, 40, 0.1);
-    }
-
-    .tag {
-        display: inline-flex;
-        align-items: center;
-        background-color: #ec5228;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.875rem;
-        margin: 2px;
-        font-weight: 500;
-    }
-
-    .tag-remove {
-        margin-left: 8px;
-        cursor: pointer;
-        color: rgba(255, 255, 255, 0.8);
-        font-weight: bold;
-        font-size: 1.1rem;
-        transition: color 0.2s;
-    }
-
-    .tag-remove:hover {
-        color: white;
-    }
-
-    .tag-input {
-        border: none;
-        outline: none;
-        flex-grow: 1;
-        min-width: 120px;
-        padding: 6px;
-        font-size: 1rem;
-    }
-
-    .add-tag-button {
-        background-color: #10b981;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 6px 12px;
-        cursor: pointer;
-        font-size: 0.875rem;
-        font-weight: 500;
-        transition: background-color 0.2s;
-    }
-
-    .add-tag-button:hover {
-        background-color: #059669;
-    }
-
-    .submit-button {
-        width: 100%;
-        background-color: #ec5228;
-        color: white;
-        border: none;
-        padding: 0.875rem 1.5rem;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.1s;
-        margin-top: 1rem;
-    }
-
-    .submit-button:hover {
-        background-color: #d44721;
-        transform: translateY(-1px);
-    }
-
-    .submit-button:active {
-        transform: translateY(0);
-    }
-
-    .preview-container {
-        border: 2px dashed #d1d5db;
-        border-radius: 12px;
-        padding: 2rem;
-        text-align: center;
-        background-color: white;
-        min-height: 400px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .preview-placeholder {
-        color: #6b7280;
-        font-size: 1.1rem;
-    }
-
-    .preview-image {
-        max-width: 100%;
-        max-height: 350px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .error-message {
-        background-color: #fee2e2;
-        color: #dc2626;
-        padding: 0.75rem;
-        border-radius: 8px;
-        margin-top: 1rem;
-        border-left: 4px solid #dc2626;
-    }
-
-    #tags {
-        display: none;
-    }
-
-    @media (max-width: 1024px) {
-        .form-container {
-            flex-direction: column;
-            margin: 1rem;
-        }
-
-        .form-section,
-        .preview-section {
-            min-width: unset;
-            padding: 1.5rem;
-        }
-
-        .preview-section {
-            border-left: none;
-            border-top: 1px solid #e9ecef;
-        }
-    }
-
-    @media (max-width: 640px) {
-        .main-container {
-            padding: 1rem 0.5rem;
-        }
-
-        .form-section,
-        .preview-section {
-            padding: 1rem;
-        }
-
-        .form-title {
-            font-size: 1.5rem;
-        }
-    }
-</style>
-{% endblock %}
-
 {% block content %}
-<div class="main-container">
-    <div class="form-container flex">
-        <div class="form-section">
-            <form method="POST" enctype="multipart/form-data" action="">
-                {% csrf_token %}
-                <h1 class="form-title">Add New Item</h1>
+<div class="min-h-screen py-8 px-4">
+    <form method="POST" enctype="multipart/form-data" action="" class="p-8">
+        {% csrf_token %}
+        <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Add New Item</h1>
 
-                <div class="form-group">
-                    <label for="name" class="form-label">Item Name:</label>
-                    <input type="text" name="name" id="name" required class="form-input" />
+        <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex-1">
+                <div class="mb-4">
+                    <label for="name" class="block mb-2 font-medium text-gray-700 text-sm">Item Name:</label>
+                    <c-input type="text" name="name" required />
                 </div>
 
-                <div class="form-group">
-                    <label for="price" class="form-label">Price:</label>
-                    <input type="number" name="price" id="price" step="0.01" required class="form-input" />
+                <div class="mb-4">
+                    <label for="price" class="block mb-2 font-medium text-gray-700 text-sm">Price:</label>
+                    <c-input type="number" name="price" step="0.01" required />
                 </div>
 
-                <div class="form-group">
-                    <label for="quantity" class="form-label">Quantity:</label>
-                    <input type="number" name="quantity" id="quantity" required class="form-input" />
+                <div class="mb-4">
+                    <label for="quantity" class="block mb-2 font-medium text-gray-700 text-sm">Quantity:</label>
+                    <c-input type="number" name="quantity" required placeholder="Item quantity" />
                 </div>
 
-                <div class="form-group">
-                    <label for="category" class="form-label">Category:</label>
-                    <input type="text" name="category" id="category" class="form-input" />
+                <div class="mb-4">
+                    <label for="category" class="block mb-2 font-medium text-gray-700 text-sm">Category:</label>
+                    <c-input type="text" name="category" />
                 </div>
 
-                <div class="form-group">
-                    <label for="itemtype" class="form-label">Item Type:</label>
-                    <input type="text" name="itemtype" id="itemtype" class="form-input" />
+                <div class="mb-4">
+                    <label for="itemtype" class="block mb-2 font-medium text-gray-700 text-sm">Item Type:</label>
+                    <c-input type="text" name="itemtype" />
                 </div>
 
-                <div class="form-group">
-                    <label for="images" class="form-label">Images:</label>
-                    <input type="file" name="images" id="images" accept="image/*" class="form-input" />
-                </div>
-
-                <div class="form-group">
-                    <label for="availablity" class="form-label">Availability:</label>
-                    <select name="availablity" id="availablity" class="form-input">
+                <div class="mb-4">
+                    <label for="availablity" class="block mb-2 font-medium text-gray-700 text-sm">Availability:</label>
+                    <c-dropdown name="availablity">
                         <option value="True">Available</option>
                         <option value="False">Unavailable</option>
-                    </select>
+                    </c-dropdown>
+                </div>
+            </div>
+
+            <div class="flex-1">
+                <div class="mb-4">
+                    <label for="images" class="block mb-2 font-medium text-gray-700 text-sm">Images:</label>
+                    <c-input type="file" name="images" accept="image/*" />
                 </div>
 
-                <div class="form-group">
-                    <label for="tags" class="form-label">Tags:</label>
-                    <div class="tags-container" id="tags-container">
-                        <input type="text" class="tag-input" id="tag-input" placeholder="Add a tag and press Enter" />
-                        <button type="button" class="add-tag-button" id="add-tag-button">Add</button>
+                <div class="border-2 border-dashed border-gray-300 rounded-xl text-center bg-white min-h-96 flex items-center justify-center mb-4"
+                    id="images-preview">
+                    <div class="text-gray-500 text-lg" id="preview-placeholder">
+                        <p>📷 Select an image to see preview here</p>
                     </div>
-                    <select name="tags" id="tags" multiple>
-                    </select>
+                    <div id="preview-grid"></div>
                 </div>
 
-                <button type="submit" class="submit-button">Add Item</button>
-            </form>
-
-            {% if error %}
-            <div class="error-message">{{ error }}</div>
-            {% endif %}
-        </div>
-
-        <div class="preview-section">
-            <div class="preview-container" id="images-preview">
-                <div class="preview-placeholder" id="preview-placeholder">
-                    <p>📷 Select an image to see preview here</p>
+                <div class="mb-4">
+                    <label for="tags" class="block mb-2 font-medium text-gray-700 text-sm">Tags:</label>
+                    <div class="flex flex-wrap gap-2 border-2 border-gray-300 px-3 py-3 rounded-lg min-h-12 items-start"
+                        id="tags-container">
+                        <div class="flex flex-wrap gap-2 w-full" id="tags-display"></div>
+                        <div class="flex gap-2 items-center w-full mt-2">
+                            <c-input type="text" id="tag-input" placeholder="Add a tag and press Enter"
+                                class="flex-1" />
+                            <button type="button"
+                                class="bg-green-500 text-white border-none rounded-md px-3 py-1.5 cursor-pointer text-sm font-medium transition-colors duration-200 hover:bg-green-600"
+                                id="add-tag-button">Add</button>
+                        </div>
+                    </div>
+                    <select name="tags" id="tags" multiple class="hidden"></select>
                 </div>
-                <div class="preview-grid" id="preview-grid"></div>
             </div>
         </div>
-    </div>
+
+        <button type="submit"
+            class="w-full bg-orange-500 text-white border-none py-3.5 px-6 rounded-lg text-lg font-semibold cursor-pointer transition-all duration-200 mt-4 hover:bg-orange-600 hover:-translate-y-0.5 active:translate-y-0">Add
+            Item</button>
+    </form>
+
+    {% if error %}
+    <div class="bg-red-50 text-red-600 px-3 py-3 rounded-lg mt-4 border-l-4 border-red-600">{{ error }}</div>
+    {% endif %}
 </div>
 
 {% block extra_js %}
 <script>
     const tagsContainer = document.getElementById('tags-container');
+    const tagsDisplay = document.getElementById('tags-display');
     const tagInput = document.getElementById('tag-input');
     const addTagButton = document.getElementById('add-tag-button');
     const tagsSelect = document.getElementById('tags');
@@ -330,9 +110,9 @@
 
         // Create tag element
         const tagElement = document.createElement('span');
-        tagElement.className = 'tag';
-        tagElement.innerHTML = `${tagText}<span class="tag-remove" data-tag="${tagText}">×</span>`;
-        tagsContainer.insertBefore(tagElement, tagInput);
+        tagElement.className = 'inline-flex items-center tag px-3 py-1.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800';
+        tagElement.innerHTML = `${tagText}<span class="tag ml-2 cursor-pointer font-bold text-lg duration-200 hover:text-red-600" data-tag="${tagText}">×</span>`;
+        tagsDisplay.appendChild(tagElement);
 
         // Add to hidden select for form submission
         const option = document.createElement('option');
@@ -346,9 +126,10 @@
 
     // Function to remove a tag
     function removeTag(tagText) {
-        const tagElements = tagsContainer.querySelectorAll('.tag');
+        const tagElements = tagsDisplay.querySelectorAll('.inline-flex');
         tagElements.forEach(element => {
-            if (element.querySelector('.tag-remove').dataset.tag === tagText) {
+            const removeBtn = element.querySelector('[data-tag]');
+            if (removeBtn && removeBtn.dataset.tag === tagText) {
                 element.remove();
             }
         });
@@ -381,9 +162,8 @@
         const reader = new FileReader();
         reader.onload = function (e) {
             const previewItem = document.createElement('div');
-            previewItem.className = 'preview-item';
             previewItem.innerHTML = `
-                <img src="${e.target.result}" alt="Preview" class="preview-image">
+                <img src="${e.target.result}" alt="Preview" class="max-w-full max-h-48 rounded-lg">
             `;
             previewGrid.appendChild(previewItem);
         };
@@ -407,8 +187,8 @@
     });
 
     // Handle tag removal
-    tagsContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('tag-remove')) {
+    tagsDisplay.addEventListener('click', (e) => {
+        if (e.target.hasAttribute('data-tag')) {
             const tagText = e.target.dataset.tag;
             removeTag(tagText);
         }

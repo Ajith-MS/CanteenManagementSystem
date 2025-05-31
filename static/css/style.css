@@ -20,13 +20,13 @@ a:hover {
   color: #ec5228;
 }
 
-.form-input {
+input {
   border: solid 2px #e8e8e8;
   border-radius: 6px;
   transition: border-color 0.3s ease;
 }
 
-.form-input:focus {
+input:focus {
   border: solid 2px #ec5228;
 }
 
@@ -49,4 +49,8 @@ a:hover {
 .filter-btn.active {
   background-color: #ff7f07;
   border: #ff7f07 2px solid;
+}
+
+.tag {
+  background: #ec5228;
 }
