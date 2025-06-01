@@ -21,17 +21,16 @@
       <form method="POST" class="space-y-4">
         {% csrf_token %}
         <div class="text-left">
-          <c-input type="text" name="username" id="username" placeholder="Username" required="true"
-            class="form-input w-full p-2" />
+          <c-input type="text" name="username" id="username" placeholder="Username" required="true" />
         </div>
         <div class="text-left">
-          <c-input type="password" name="password" id="password" placeholder="Password" required="true"
-            class="form-input w-full p-2" />
+          <c-input type="password" name="password" id="password" placeholder="Password" required="true" />
         </div>
-        <c-submit-button text="Sign In" </form>
-          <p class="mt-6 text-sm">Don't have an account?
-            <a href="{% url 'UserAuth:usersignup' %}" class="text-gray-700">Sign up</a>
-          </p>
+        <c-submit-button text=" Sign In" />
+      </form>
+      <p class="mt-6 text-sm">Don't have an account?
+        <a href="{% url 'UserAuth:usersignup' %}" class="text-gray-700">Sign up</a>
+      </p>
     </div>
   </div>
 </div>
