@@ -184,22 +184,29 @@
                         </div>
                     </div>
 
-                    <div>
-                        <label for="availablity" class="form-label">Availability:</label>
-                        <select id="availablity" name="availablity" class="form-input" required>
-                            <option value="Yes" {% if item.availablity=='Yes' %}selected{% endif %}>Yes</option>
-                            <option value="No" {% if item.availablity=='No' %}selected{% endif %}>No</option>
-                        </select>
+                    <div class="mb-4">
+                        <label for="availablity"
+                            class="block mb-2 font-medium text-gray-700 text-sm">Availability:</label>
+                        <c-dropdown name="availablity">
+                            <option value="True">Available</option>
+                            <option value="False">Unavailable</option>
+                        </c-dropdown>
                     </div>
-
-                    <div>
-                        <label for="tags" class="form-label">Tags (hold Ctrl to select multiple):</label>
-                        <select id="tags" name="tags" multiple class="form-input" style="height: 100px;">
-                            {% for tag in all_tags %}
-                            <option value="{{ tag }}" {% if tag in item.tags %}selected{% endif %}>{{ tag }}</option>
-                            {% endfor %}
-                        </select>
+                    
+{{item.tags}}
+                   <div class="mb-4">
+                    <label for="tags" class="block mb-2 font-medium text-gray-700 text-sm">Tags:</label>
+                    <div class="flex flex-wrap gap-2 border-2 border-gray-300 px-3 py-3 rounded-lg min-h-12 items-start"
+                        id="tags-container">
+                        <div class="flex flex-wrap gap-2 w-full" id="tags-display"></div>
+                        <div class="flex gap-2 items-center w-full mt-2">
+                            <c-input type="text" id="tag-input" placeholder="Add a tag and press Enter"
+                                class="flex-1" />
+                            <c-submit-button text="Add Tag" />
+                        </div>
                     </div>
+                    <select name="tags" id="tags" multiple class="hidden"></select>
+                </div>
 
                     <div>
                         <label for="images" class="form-label">Upload Images:</label>
@@ -239,6 +246,17 @@
     </div>
 
     <script>
+
+    const tagsContainer = document.getElementById('tags-container');
+    const tagsDisplay = document.getElementById('tags-display');
+    const tagInput = document.getElementById('tag-input');
+    const addTagButton = document.getElementById('add-tag-button');
+    const tagsSelect = document.getElementById('tags');
+    const imagesInput = document.getElementById('images');
+    const previewGrid = document.getElementById('preview-grid');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+
+
         document.getElementById('images').addEventListener('change', function (e) {
             const files = Array.from(e.target.files);
             const previewArea = document.getElementById('imagePreviewArea');

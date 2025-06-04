@@ -81,8 +81,6 @@ def edit_item(request, item_id):
             # Save the file with the new name
             file_path = default_storage.save(f'menu_images/{new_filename}', ContentFile(image.read()))
             item.image = file_path
-
-
         # Save the updated item
         item.save()
         return redirect('Manager:listmenu')
