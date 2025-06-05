@@ -30,7 +30,6 @@ def create_item(request):
         category = request.POST.get("category")
         itemtype = request.POST.get("itemtype")
         image = request.FILES.get("image")
-        availablity = request.POST.get("availablity")    
         item_id = generate_item_id()
         tags = request.POST.getlist("tags")
 
@@ -51,7 +50,6 @@ def create_item(request):
             category=category,
             itemtype=itemtype,
             image=file_path,
-            availablity=availablity,
             tags=tags
         )
         # Redirect to the list menu page after creating the item
@@ -68,7 +66,6 @@ def edit_item(request, item_id):
         item.quantity = request.POST.get("quantity")
         item.category = request.POST.get("category")
         item.itemtype = request.POST.get("itemtype")
-        item.availablity = request.POST.get("availablity")
         item.tags = request.POST.getlist("tags")
 
         # Check if a new image is uploaded

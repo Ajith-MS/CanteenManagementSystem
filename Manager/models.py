@@ -9,7 +9,6 @@ class Menu(models.Model):
     category = models.CharField(max_length=50, null=True, blank=True)
     itemtype = models.CharField(max_length=50, null=True, blank=True)  # e.g., Veg, Non-Veg, etc.
     image = models.ImageField(upload_to='menu_images/')
-    availablity = models.BooleanField(default=True)
     tags = models.JSONField(default=list)  # Store tags as a JSON field
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

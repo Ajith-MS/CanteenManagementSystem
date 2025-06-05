@@ -1,308 +1,233 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Edit Menu Item{% endblock %}
-
-{% block extra_css %}
-<style>
-    .form-container {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        font-size: 14px;
-    }
-
-    .form-input:focus {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    .form-label {
-        display: block;
-        margin-bottom: 4px;
-        font-weight: 500;
-        color: #374151;
-    }
-
-    .btn-primary {
-        background: #3b82f6;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .btn-primary:hover {
-        background: #2563eb;
-    }
-
-    .btn-secondary {
-        background: #6b7280;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 6px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-block;
-    }
-
-    .btn-secondary:hover {
-        background: #4b5563;
-    }
-
-    .image-preview-container {
-        background: #f9fafb;
-        border: 2px dashed #d1d5db;
-        border-radius: 8px;
-        padding: 20px;
-        text-align: center;
-        min-height: 400px;
-    }
-
-    .preview-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-        margin-top: 15px;
-    }
-
-    .preview-item {
-        position: relative;
-        background: white;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .preview-image {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-    }
-
-    .remove-btn {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background: #ef4444;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .remove-btn:hover {
-        background: #dc2626;
-    }
-
-    .main-layout {
-        display: grid;
-        grid-template-columns: 1fr 300px;
-        gap: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .main-layout {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>
-{% endblock %}
+{% block title %}Edit Item{% endblock %}
 
 {% block content %}
+<div class="min-h-screen py-8 px-4">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-6 text-center">Add New Item</h1>
 
-<body class="font-inter bg-gray-50">
-    <nav class="bg-white py-4 shadow-md mb-8">
-        <div class="max-w mx-auto px-5 flex justify-between items-center">
-            <div class="flex-grow text-center">
-                <span class="font-satisfy text-2xl font-bold text-gray-700 logo">Snaccs</span>
-            </div>
-            <div class="flex space-x-4 ml-auto">
-                <a href="" class="text-gray-800 font-semibold text-lg">Profile</a>
-                <a href="" class="text-gray-800 font-semibold text-lg">Orders</a>
-                <a href="" class="text-gray-800 font-semibold text-lg">Logout</a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="max-w-6xl mx-auto px-4">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-900">Edit Menu Item</h2>
-            <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">← Back to Menu</a>
+    <div class="flex flex-col lg:flex-row gap-4">
+        <div class="w-full lg:w-3/12 p-4">
+            <a href="javascript:history.back()"
+                class="inline-block bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mb-4">
+                &larr; Back
+            </a>
         </div>
 
-        <div class="main-layout">
-            <div class="form-container p-6">
-                <form method="POST" enctype="multipart/form-data" class="space-y-4" id="editItemForm">
-                    {% csrf_token %}
+        <div class="w-full lg:w-6/12 p-4">
+            <form method="POST" enctype="multipart/form-data" action="">
+                {% csrf_token %}
+                <div class="flex flex-col gap-8">
+                    <div class="flex-1">
+                        <div class="mb-4">
+                            <label for="name" class="block mb-2 font-medium text-gray-700 text-sm">Item Name:</label>
+                            <c-input type="text" name="name" required />
+                        </div>
 
-                    <div>
-                        <label for="name" class="form-label">Name:</label>
-                        <input type="text" id="name" name="name" value="{{ item.name }}" class="form-input" required>
+                        <div class="mb-4">
+                            <label for="price" class="block mb-2 font-medium text-gray-700 text-sm">Price:</label>
+                            <c-input type="number" name="price" step="0.01" required />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="quantity" class="block mb-2 font-medium text-gray-700 text-sm">Quantity:</label>
+                            <c-input type="number" name="quantity" required placeholder="Item quantity" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="category" class="block mb-2 font-medium text-gray-700 text-sm">Category:</label>
+                            <c-input type="text" name="category" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="itemtype" class="block mb-2 font-medium text-gray-700 text-sm">Item
+                                Type:</label>
+                            <c-input type="text" name="itemtype" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="tag-input" class="block mb-2 font-medium text-gray-700 text-sm">Tags:</label>
+                            <div class="flex items-center gap-2">
+                                <c-input type="text" id="tag-input" placeholder="Add a tag and press Enter"
+                                    class="flex-grow" />
+                                <c-button text="Add Tag" id="add-tag-button" type="button" />
+                            </div>
+                            <div id="tags-display" class="mt-2 flex flex-wrap gap-2">
+                                {% for tag in item.tags %}
+                                <div
+                                    class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center shadow-sm">
+                                    <span>{{ tag.name }}</span>
+                                    <button type="button"
+                                        class="remove-btn ml-2 text-blue-700 hover:text-blue-900 font-bold"
+                                        data-tag="{{ tag.name }}">×</button>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <select multiple name="tags" id="tags" class="hidden"></select>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="price" class="form-label">Price:</label>
-                            <input type="number" id="price" name="price" value="{{ item.price }}" class="form-input"
-                                step="0.01" required>
+                    <div class="flex-1">
+                        <div class="mb-4">
+                            <label for="image" class="block mb-2 font-medium text-gray-700 text-sm">Image:</label>
+                            <c-input type="file" name="image" accept="image/*" id="images" />
                         </div>
-                        <div>
-                            <label for="quantity" class="form-label">Quantity:</label>
-                            <input type="number" id="quantity" name="quantity" value="{{ item.quantity }}"
-                                class="form-input" required>
-                        </div>
-                    </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="category" class="form-label">Category:</label>
-                            <input type="text" id="category" name="category" value="{{ item.category }}"
-                                class="form-input" required>
-                        </div>
-                        <div>
-                            <label for="itemtype" class="form-label">Item Type:</label>
-                            <input type="text" id="itemtype" name="itemtype" value="{{ item.itemtype }}"
-                                class="form-input" required>
+                        <div class="border-2 border-dashed border-gray-300 rounded-xl text-center bg-white min-h-96 flex items-center justify-center mb-4"
+                            id="images-preview">
+                            <div class="text-gray-500 text-lg" id="preview-placeholder">
+                                <p>📷 Select an image to see preview here</p>
+                            </div>
+                            <div id="preview-grid"></div>
                         </div>
                     </div>
-
-                    <div class="mb-4">
-                        <label for="availablity"
-                            class="block mb-2 font-medium text-gray-700 text-sm">Availability:</label>
-                        <c-dropdown name="availablity">
-                            <option value="True">Available</option>
-                            <option value="False">Unavailable</option>
-                        </c-dropdown>
-                    </div>
-                    
-{{item.tags}}
-                   <div class="mb-4">
-                    <label for="tags" class="block mb-2 font-medium text-gray-700 text-sm">Tags:</label>
-                    <div class="flex flex-wrap gap-2 border-2 border-gray-300 px-3 py-3 rounded-lg min-h-12 items-start"
-                        id="tags-container">
-                        <div class="flex flex-wrap gap-2 w-full" id="tags-display"></div>
-                        <div class="flex gap-2 items-center w-full mt-2">
-                            <c-input type="text" id="tag-input" placeholder="Add a tag and press Enter"
-                                class="flex-1" />
-                            <c-submit-button text="Add Tag" />
-                        </div>
-                    </div>
-                    <select name="tags" id="tags" multiple class="hidden"></select>
                 </div>
+                <c-submit-button type="submit" text="Create Item" />
+            </form>
 
-                    <div>
-                        <label for="images" class="form-label">Upload Images:</label>
-                        <input type="file" id="images" name="images" class="form-input" accept="image/*" multiple>
-                        <p class="text-sm text-gray-500 mt-1">You can select multiple images at once</p>
-                    </div>
+            {% if error %}
+            <div class="bg-red-50 text-red-600 px-3 py-3 rounded-lg mt-4 border-l-4 border-red-600">{{ error }}</div>
+            {% endif %}
+        </div>
 
-                    <div class="flex space-x-4 pt-4">
-                        <button type="submit" class="btn-primary">Update Item</button>
-                        <a href="{% url 'Manager:list_menu' %}" class="btn-secondary">Cancel</a>
-                    </div>
-                </form>
+        <div class="w-full lg:w-3/12 p-4">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">Recently Added Items</h2>
+            <div id="already-added-items-display" class="bg-white p-4 rounded-lg shadow">
+                <p class="text-gray-500">No items added recently.</p>
 
-                {% if error %}
-                <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                    {{ error }}
-                </div>
-                {% endif %}
-            </div>
-
-            <div class="image-preview-container">
-                <h3 class="text-lg font-semibold text-gray-700 mb-4">Image Previews</h3>
-
-                {% if item.image %}
-                <div class="mb-4">
-                    <p class="text-sm text-gray-600 mb-2">Current Image:</p>
-                    <img src="{{ item.image.url }}" alt="Current Image"
-                        class="w-32 h-32 object-cover rounded-lg mx-auto">
-                </div>
-                {% endif %}
-
-                <div id="imagePreviewArea">
-                    <p class="text-gray-500 text-sm">Select images to see previews here</p>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-
-    const tagsContainer = document.getElementById('tags-container');
+{% block extra_js %}
+<script>
     const tagsDisplay = document.getElementById('tags-display');
     const tagInput = document.getElementById('tag-input');
-    const addTagButton = document.getElementById('add-tag-button');
-    const tagsSelect = document.getElementById('tags');
+    const addTagButton = document.getElementById('add-tag-button'); // Corrected selector
+    const tagsSelect = document.getElementById('tags'); // Corrected selector
     const imagesInput = document.getElementById('images');
     const previewGrid = document.getElementById('preview-grid');
     const previewPlaceholder = document.getElementById('preview-placeholder');
 
+    let selectedFile = null;
 
-        document.getElementById('images').addEventListener('change', function (e) {
-            const files = Array.from(e.target.files);
-            const previewArea = document.getElementById('imagePreviewArea');
+    // Function to add a tag to the container and select element
+    function addTag(tagText) {
+        if (tagText.trim() === '') return;
 
-            if (files.length === 0) {
-                previewArea.innerHTML = '<p class="text-gray-500 text-sm">Select images to see previews here</p>';
-                return;
-            }
-
-            previewArea.innerHTML = '<div class="preview-grid" id="previewGrid"></div>';
-            const previewGrid = document.getElementById('previewGrid');
-
-            files.forEach((file, index) => {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        const previewItem = document.createElement('div');
-                        previewItem.className = 'preview-item';
-                        previewItem.innerHTML = `
-                            <img src="${e.target.result}" alt="Preview" class="preview-image">
-                            <button type="button" class="remove-btn" onclick="removeImage(${index})">×</button>
-                        `;
-                        previewGrid.appendChild(previewItem);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-
-        function removeImage(index) {
-            const input = document.getElementById('images');
-            const files = Array.from(input.files);
-
-            // Create new FileList without the removed file
-            const dt = new DataTransfer();
-            files.forEach((file, i) => {
-                if (i !== index) {
-                    dt.items.add(file);
-                }
-            });
-
-            input.files = dt.files;
-
-            // Trigger change event to update preview
-            input.dispatchEvent(new Event('change'));
+        // Prevent duplicate tags (case-insensitive)
+        const existingTags = Array.from(tagsSelect.options).map(opt => opt.value.toLowerCase());
+        if (existingTags.includes(tagText.toLowerCase())) {
+            tagInput.value = ''; // Clear input even if duplicate
+            return;
         }
-    </script>
-</body>
+
+        // Create tag element
+        const tagElement = document.createElement('div');
+        tagElement.className = 'bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm flex items-center shadow-sm';
+        tagElement.innerHTML = `<span>${tagText}</span><button type="button" class="remove-btn ml-2 text-blue-700 hover:text-blue-900 font-bold" data-tag="${tagText}">×</button>`;
+        tagsDisplay.appendChild(tagElement);
+
+        // Add to hidden select for form submission
+        const option = document.createElement('option');
+        option.value = tagText;
+        option.selected = true; // Mark as selected
+        option.text = tagText; // Set text for easier debugging if needed
+        tagsSelect.appendChild(option);
+
+        // Clear input
+        tagInput.value = '';
+    }
+
+    // Function to remove a tag
+    function removeTag(tagText) {
+        const tagElements = tagsDisplay.querySelectorAll('.remove-btn'); // More specific selector
+        tagElements.forEach(button => {
+            if (button.dataset.tag === tagText) {
+                button.parentElement.remove(); // Remove the whole tag element
+            }
+        });
+        const options = tagsSelect.querySelectorAll('option');
+        options.forEach(option => {
+            if (option.value === tagText) {
+                option.remove();
+            }
+        });
+    }
+
+    // Function to remove image
+    function removeImage() {
+        selectedFile = null;
+        imagesInput.value = ''; // Clear the file input
+        displayPreviews();
+    }
+
+    // Function to display image previews
+    function displayPreviews() {
+        previewGrid.innerHTML = '';
+
+        if (!selectedFile) {
+            previewPlaceholder.style.display = 'block';
+            return;
+        }
+
+        previewPlaceholder.style.display = 'none';
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const previewItem = document.createElement('div');
+            previewItem.className = 'relative'; // For potential remove button positioning
+            previewItem.innerHTML = `
+                <img src="${e.target.result}" alt="Preview" class="max-w-full max-h-48 rounded-lg shadow">
+            `;
+            // Optionally, add a remove button for the image preview itself
+            // const removeImgBtn = document.createElement('button');
+            // removeImgBtn.textContent = '×';
+            // removeImgBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs';
+            // removeImgBtn.onclick = removeImage;
+            // previewItem.appendChild(removeImgBtn);
+            previewGrid.appendChild(previewItem);
+        };
+        reader.readAsDataURL(selectedFile);
+    }
+
+    // Handle image selection
+    imagesInput.addEventListener('change', function (e) {
+        if (e.target.files.length > 0) {
+            selectedFile = e.target.files[0]; // Corrected variable name
+            displayPreviews();
+        } else {
+            removeImage(); // If files are cleared (e.g., by selecting then cancelling)
+        }
+    });
+
+    // Make removeImage function global if needed by other parts, or keep it local
+    // window.removeImage = removeImage; // Uncomment if needed globally
+
+    // Handle tag addition on button click
+    if (addTagButton) { // Ensure button exists
+        addTagButton.addEventListener('click', () => {
+            addTag(tagInput.value.trim());
+        });
+    }
+
+
+    // Handle tag removal
+    tagsDisplay.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-btn')) {
+            const tagText = e.target.dataset.tag;
+            removeTag(tagText);
+        }
+    });
+
+    // Handle Enter key for adding tags
+    tagInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Prevent form submission on Enter in this input
+            addTag(tagInput.value.trim());
+        }
+    });
+</script>
+{% endblock %}
 {% endblock %}
